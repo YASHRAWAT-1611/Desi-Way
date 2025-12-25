@@ -113,37 +113,31 @@ enjoyable.
 
 #  System Architecture (High-Level)
 
-![](Media/image01.png){width="6.268055555555556in"
-height="3.0743055555555556in"}
+![](Media/image01.png)
 
 # Data Flow Diagram
 
 ## DFD Level 0 (Context Diagram)
 
-![](Media/image02.png){width="5.485902230971129in"
-height="3.396033464566929in"}
+![](Media/image02.png)
 
 ## DFD Level 1
 
-![](Media/image03.png){width="6.247326115485564in"
-height="8.234068241469815in"}
+![](Media/image03.png)
 
 # Flowcharts
 
 ## Overall User Flow
 
-![](Media/image04.png){width="5.773661417322835in"
-height="8.354725503062117in"}
+![](Media/image04.png)
 
 ## AI Assistant Flowchart
 
-![](Media/image05.png){width="6.268055555555556in"
-height="7.2131944444444445in"}
+![](Media/image05.png)
 
 ## Scam Detection Flow
 
-![](Media/image06.png){width="6.268055555555556in"
-height="6.276388888888889in"}
+![](Media/image06.png)
 
 # Privacy & Security
 
