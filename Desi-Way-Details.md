@@ -96,7 +96,7 @@ enjoyable.
 # Tech Stack
 
   -----------------------------------------------------------------------
-          **Layer**                         **Technology**
+            Layer                             Technology
   -------------------------- --------------------------------------------
            Frontend                 Kotlin+Flutter+Jetpack Compose
 
@@ -113,36 +113,36 @@ enjoyable.
 
 #  System Architecture (High-Level)
 
-![](media/image1.png){width="6.268055555555556in"
+![](Media/image01.png){width="6.268055555555556in"
 height="3.0743055555555556in"}
 
 # Data Flow Diagram
 
 ## DFD Level 0 (Context Diagram)
 
-![](media/image2.png){width="5.485902230971129in"
+![](Media/image02.png){width="5.485902230971129in"
 height="3.396033464566929in"}
 
 ## DFD Level 1
 
-![](media/image3.png){width="6.247326115485564in"
+![](Media/image03.png){width="6.247326115485564in"
 height="8.234068241469815in"}
 
 # Flowcharts
 
 ## Overall User Flow
 
-![](media/image4.png){width="5.773661417322835in"
+![](Media/image04.png){width="5.773661417322835in"
 height="8.354725503062117in"}
 
 ## AI Assistant Flowchart
 
-![](media/image5.png){width="6.268055555555556in"
+![](Media/image05.png){width="6.268055555555556in"
 height="7.2131944444444445in"}
 
 ## Scam Detection Flow
 
-![](media/image6.png){width="6.268055555555556in"
+![](Media/image06.png){width="6.268055555555556in"
 height="6.276388888888889in"}
 
 # Privacy & Security
