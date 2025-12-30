@@ -11,11 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.yashrawwt.desiway.ui.theme.MustardBottom
 import com.yashrawwt.desiway.ui.theme.MustardTop
 
 @Composable
-fun DashboardScreen() {
+fun DashboardScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()

@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.yashrawwt.desiway.ui.theme.MustardBottom
 import com.yashrawwt.desiway.ui.theme.MustardTop
@@ -22,7 +23,7 @@ import com.yashrawwt.desiway.ui.theme.components.AnimatedEnterItem
 
 
 @Composable
-fun FavouriteScreen() {
+fun FavouriteScreen(navController: NavController) {
 
     val destinations = listOf(
         "https://images.unsplash.com/photo-1696761653275-f9815547ef3e?q=80&w=1029&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" to "Pithoragarh",

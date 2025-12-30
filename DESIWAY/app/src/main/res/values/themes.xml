@@ -2,6 +2,7 @@
 <resources>
 
     <style name="Theme.DesiWay" parent="android:Theme.Material.Light.NoActionBar" />
+
     <style name="Theme.DesiWay.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/mustard_yellow</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/logo</item>
