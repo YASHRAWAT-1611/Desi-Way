@@ -21,6 +21,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.ui.graphics.graphicsLayer
+
 
 @Composable
 fun PlaceCard(
@@ -64,27 +68,37 @@ fun PlaceCard(
         )
 
         // Heart Icon
-        Icon(
-            imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-            contentDescription = "Favorite",
-            tint = if (isFavorite) Color.Red else Color.White,
+        Box(
             modifier = Modifier
                 .padding(12.dp)
                 .align(Alignment.TopEnd)
-                .size(26.dp)
-                .clickable { isFavorite = !isFavorite }
-        )
+        ) {
+            AnimatedHeart(
+                isFavorite = isFavorite,
+                onToggle = { isFavorite = !isFavorite }
+            )
+        }
+
 
         // Text Content
         Column(
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .padding(14.dp)
+                .padding(16.dp)
         ) {
+            Text(
+                text = placeName,
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.White,
+                maxLines = 1
+            )
+
+            Spacer(modifier = Modifier.height(2.dp))
+
             Text(
                 text = location,
                 style = MaterialTheme.typography.bodySmall,
-                color = Color.White.copy(alpha = 0.9f)
+                color = Color.White.copy(alpha = 0.85f)
             )
         }
     }

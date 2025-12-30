@@ -3,9 +3,10 @@ package com.yashrawwt.desiway.ui.theme.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.yashrawwt.desiway.ui.theme.screens.common.PlaceholderScreen
+import com.yashrawwt.desiway.ui.theme.screens.dashboard.DashboardScreen
+import com.yashrawwt.desiway.ui.theme.screens.favourite.FavouriteScreen
 import com.yashrawwt.desiway.ui.theme.screens.home.HomeScreen
+import com.yashrawwt.desiway.ui.theme.screens.settings.SettingsScreen
 
 @Composable
 fun AppNavGraph(navController: androidx.navigation.NavHostController) {
@@ -18,13 +19,13 @@ fun AppNavGraph(navController: androidx.navigation.NavHostController) {
             HomeScreen()
         }
         composable(BottomNavItem.Saved.route) {
-            PlaceholderScreen("Saved")
+            FavouriteScreen()
         }
         composable(BottomNavItem.Profile.route) {
-            PlaceholderScreen("Profile")
+            DashboardScreen()
         }
         composable(BottomNavItem.Settings.route) {
-            PlaceholderScreen("Settings")
+            SettingsScreen()
         }
     }
 }

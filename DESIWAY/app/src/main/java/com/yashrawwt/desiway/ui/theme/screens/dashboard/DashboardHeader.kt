@@ -1,54 +1,47 @@
-package com.yashrawwt.desiway.ui.theme.screens.home
+package com.yashrawwt.desiway.ui.theme.screens.dashboard
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 
 @Composable
-fun HomeHeader() {
+fun DashboardHeader() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 16.dp),
+            .padding(20.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
 
-        // Left: Greeting text
         Column {
             Text(
                 text = "Hi, John 👋",
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold
             )
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             Text(
-                text = "Explore India with us",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.Black.copy(alpha = 0.7f)
+                text = "Travel distance with us",
+                style = MaterialTheme.typography.bodyMedium
             )
         }
 
-        // Right: Profile Picture
         Surface(
             shape = CircleShape,
-            shadowElevation = 6.dp,
-            modifier = Modifier
-                .size(44.dp)
-                .clickable {
-                    // TODO: Navigate to Profile screen
-                }
+            shadowElevation = 8.dp,
+            modifier = Modifier.size(64.dp)
         ) {
             AsyncImage(
                 model = "https://i.pravatar.cc/150?img=12",
-                contentDescription = "Profile Picture",
+                contentDescription = "Profile",
                 contentScale = ContentScale.Crop
             )
         }

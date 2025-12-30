@@ -1,69 +1,48 @@
 package com.yashrawwt.desiway.ui.theme.screens.home
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-
-@Composable
-fun FeatureButton(
-    icon: @Composable () -> Unit,
-    title: String
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.width(72.dp)
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(72.dp)
-                .background(
-                    color = Color(0xFFFFF3E0),
-                    shape = RoundedCornerShape(18.dp)
-                )
-        ) {
-            icon()
-        }
-
-        Spacer(modifier = Modifier.height(6.dp))
-
-        Text(text = title)
-    }
-}
+import com.yashrawwt.desiway.ui.theme.components.FeatureItem
 
 @Composable
 fun FeatureGrid() {
 
     val features = listOf(
-        "Emergency",
-        "Scam Alert",
-        "Translate",
-        "Food",
-        "Travel",
-        "Adventure",
-        "Culture",
-        "Maps"
+        Feature("Emergency", Icons.Default.Warning),
+        Feature("Scam Alert", Icons.Default.Info),
+        Feature("Translate", Icons.Default.Language),
+        Feature("Food", Icons.Default.Fastfood),
+        Feature("Travel", Icons.Default.DirectionsBus),
+        Feature("Adventure", Icons.Default.Explore),
+        Feature("Culture", Icons.Default.Public),
+        Feature("Maps", Icons.Default.Map)
     )
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(4),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .height(220.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp),
         horizontalArrangement = Arrangement.spacedBy(14.dp)
     ) {
-        items(features) { title ->
-            FeatureButton(title = title)
+        items(features.size) { index ->
+            FeatureItem(
+                icon = features[index].icon,
+                title = features[index].title
+            )
         }
     }
 }
+
+
+data class Feature(
+    val title: String,
+    val icon: androidx.compose.ui.graphics.vector.ImageVector
+)

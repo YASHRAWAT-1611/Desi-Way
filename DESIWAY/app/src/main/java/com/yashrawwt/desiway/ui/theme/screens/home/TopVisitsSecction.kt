@@ -38,7 +38,7 @@ fun TopVisitsSection(){
             }
             item {
                 PlaceCard(
-                    imageUrl = "https://images.unsplash.com/photo-1603874511427-dc9c9fbb57c1",
+                    imageUrl = "https://plus.unsplash.com/premium_photo-1697730331435-92e07494db43?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                     placeName = "Golden Temple",
                     location = "Amritsar"
                 )

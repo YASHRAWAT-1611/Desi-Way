@@ -8,6 +8,10 @@ val SaffronOrange = Color(0xFFFF9F1C) //Accent
 val DeepGreen = Color(0xFF1B8F1B) //Success
 val AlertRed = Color(0xFFD32F2F) //Emergency
 val DeepBlue = Color(0xFF1A237E) //Navigation
+val OrangeLight = Color(0xFFFFA726)
+val MustardTop = Color(0xFFFFD966)
+val MustardBottom = Color(0xFFFFB347)
+
 
 // Neutrals
 val White = Color(0xFFFFFFFF)
