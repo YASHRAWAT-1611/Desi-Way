@@ -1,4 +1,4 @@
-#DESI WAY Smart Travel & Cultural Companion App IN
+# DESI WAY Smart Travel & Cultural Companion App IN
 DESI WAY is a modern Android application built using Jetpack Compose that helps users explore travel destinations, Indian culture, food, adventure activities, safety features, and navigation tools in one unified platform.
 
 This project is currently under active development and has reached a strong functional and architectural milestone, suitable for academic evaluation and further backend integration.
@@ -156,3 +156,4 @@ This project demonstrates:
 - Reusable component design
 - Scalable project structure
 - Industry-ready coding practices
+
