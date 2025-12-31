@@ -124,6 +124,7 @@ PlaceDetailScreen
 ## Screenshots Section
 
 ### Home Screen
+![](Media/home.jpeg)
 
 ### Travel Screen
 
@@ -156,6 +157,7 @@ This project demonstrates:
 - Reusable component design
 - Scalable project structure
 - Industry-ready coding practices
+
 
 
 
