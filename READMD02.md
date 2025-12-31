@@ -105,13 +105,13 @@ Overall Progress: ~55-60% (Frontend + Navigation Complete)
 ## Architecture & Design Decisions
 
 ### Central Repository Pattern
-'code' 
+`code` 
 PlaceRepository
       ↓
 Home / Travel / favourite / Dashboard
       ↓
 PlaceDetailScreen
-'code'
+`code`
 - Avoids data duplication
 - Makes backend/API integration easier
 - Ensures consistent UI & navigation
@@ -156,6 +156,7 @@ This project demonstrates:
 - Reusable component design
 - Scalable project structure
 - Industry-ready coding practices
+
 
 
 
