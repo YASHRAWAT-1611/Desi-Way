@@ -106,10 +106,10 @@ Overall Progress: ~55-60% (Frontend + Navigation Complete)
 
 ### Central Repository Pattern
 ` 
-PlaceRepository
-      ↓
-Home / Travel / favourite / Dashboard
-      ↓
+PlaceRepository \n
+      \t↓\n
+Home / Travel / favourite / Dashboard \n
+      \t↓\n
 PlaceDetailScreen
 `
 - Avoids data duplication
@@ -156,6 +156,7 @@ This project demonstrates:
 - Reusable component design
 - Scalable project structure
 - Industry-ready coding practices
+
 
 
 
