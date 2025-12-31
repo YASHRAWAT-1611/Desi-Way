@@ -164,3 +164,5 @@ enjoyable.
 Desi Way (India Visitor Companion) aims to become the **official digital
 travel partner** for foreign tourists in India by providing safety,
 clarity, and confidence---similar to visitor apps used in **Japan.**
+
+For the app details see README02.md
