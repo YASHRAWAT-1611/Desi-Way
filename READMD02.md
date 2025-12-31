@@ -123,21 +123,21 @@ PlaceDetailScreen
 
 ## Screenshots Section
 
-# Home Screen
+### Home Screen
 
-# Travel Screen
+### Travel Screen
 
-# Place Details Screen
+### Place Details Screen
 
-# Food Screen
+### Food Screen
 
-# Adventure Screen
+### Adventure Screen
 
-# Culture Screen
+### Culture Screen
 
-# Emergency Screen
+### Emergency Screen
 
-# Maps Screen
+### Maps Screen
 
 ## Next Planned Development (Remaining 40-45%)
 - Backend/API integration
@@ -156,4 +156,5 @@ This project demonstrates:
 - Reusable component design
 - Scalable project structure
 - Industry-ready coding practices
+
 
