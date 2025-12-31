@@ -21,17 +21,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.yashrawwt.desiway.ui.theme.MustardBottom
 import com.yashrawwt.desiway.ui.theme.MustardTop
+import com.yashrawwt.desiway.ui.theme.navigation.FeatureRoutes
 
 /* ---------------- MAIN SCREEN ---------------- */
 
 @Composable
-fun FoodScreen() {
+fun FoodScreen(navController: NavHostController) {
 
     var selectedFilter by remember { mutableStateOf(FoodFilter.ALL) }
-
     val favorites = remember { mutableStateListOf<String>() }
 
     val filteredItems by remember {
@@ -77,7 +78,8 @@ fun FoodScreen() {
                             FoodCategorySection(
                                 title = category.name.replace("_", " "),
                                 items = categoryItems,
-                                favorites = favorites
+                                favorites = favorites,
+                                navController = navController
                             )
                         }
                     }
@@ -107,9 +109,7 @@ private fun FoodFilterToggle(
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(20.dp))
-                    .background(
-                        if (selected == filter) Color.Black else Color.Transparent
-                    )
+                    .background(if (selected == filter) Color.Black else Color.Transparent)
                     .clickable { onSelect(filter) }
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 contentAlignment = Alignment.Center
@@ -167,7 +167,8 @@ private fun FoodHeader() {
 private fun FoodCategorySection(
     title: String,
     items: List<FoodItemData>,
-    favorites: SnapshotStateList<String>
+    favorites: SnapshotStateList<String>,
+    navController: NavHostController
 ) {
     Column {
         Text(
@@ -191,6 +192,11 @@ private fun FoodCategorySection(
                             favorites.remove(item.id)
                         else
                             favorites.add(item.id)
+                    },
+                    onClick = {
+                        navController.navigate(
+                            "${FeatureRoutes.FOOD_DETAIL}/${item.id}"
+                        )
                     }
                 )
             }
@@ -204,13 +210,15 @@ private fun FoodCategorySection(
 private fun FoodCard(
     item: FoodItemData,
     isFavorite: Boolean,
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
             .width(160.dp)
             .height(200.dp)
             .clip(RoundedCornerShape(18.dp))
+            .clickable { onClick() }
     ) {
 
         AsyncImage(
@@ -311,5 +319,5 @@ private val allFood = listOf(
 
     FoodItemData("drink1", "Sugarcane Juice",
         "https://images.unsplash.com/photo-1534353473418-4cfa6c56fd38?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        true, FoodCategory.DRINKS),
+        true, FoodCategory.DRINKS)
 )

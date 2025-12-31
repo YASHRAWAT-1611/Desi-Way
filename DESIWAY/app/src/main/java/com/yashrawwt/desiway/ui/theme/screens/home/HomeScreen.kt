@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.yashrawwt.desiway.ui.theme.components.BottomNavigationBar
 import com.yashrawwt.desiway.ui.theme.MustardBottom
 import com.yashrawwt.desiway.ui.theme.MustardTop
+import com.yashrawwt.desiway.ui.theme.components.BottomNavigationBar
 import com.yashrawwt.desiway.ui.theme.navigation.AppNavGraph
 
 @Composable
@@ -41,17 +42,20 @@ fun HomeScreen(navController: NavHostController) {
                 ) {
                     item { HomeHeader() }
                     item { SearchBar() }
-                    item { TopVisitsSection() }
+
+                    // ✅ UPDATED: pass navController
+                    item { TopVisitsSection(navController) }
+
                     item {
-                        FeatureGrid(navController) // ✅ SAME CONTROLLER
+                        FeatureGrid(navController)
                     }
-                    item { Spacer(Modifier.height(24.dp)) }
+
+                    item { Spacer(modifier = Modifier.height(24.dp)) }
                 }
             }
         }
     }
 }
-
 
 @Composable
 fun MainScreen() {
@@ -65,4 +69,3 @@ fun MainScreen() {
         }
     }
 }
-

@@ -47,7 +47,7 @@ fun DashboardScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            RecentPlacesSection()
+            RecentPlacesSection(navController)
         }
     }
 }

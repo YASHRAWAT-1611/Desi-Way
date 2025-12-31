@@ -1,17 +1,11 @@
 package com.yashrawwt.desiway.ui.theme.components
 
-import android.net.Uri
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,16 +15,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
-import androidx.compose.ui.graphics.graphicsLayer
-
 
 @Composable
 fun PlaceCard(
     imageUrl: String,
     placeName: String,
-    location: String
+    location: String,
+    onClick: () -> Unit          // NEW
 ) {
     var isFavorite by remember { mutableStateOf(false) }
 
@@ -44,8 +35,10 @@ fun PlaceCard(
                 shape = RoundedCornerShape(22.dp),
                 ambientColor = Color.Black.copy(0.3f)
             )
-    ){
-        // Background Image
+            .clickable { onClick() }    // CARD CLICK
+    ) {
+
+        /* ---------- IMAGE ---------- */
         AsyncImage(
             model = imageUrl,
             contentDescription = placeName,
@@ -53,8 +46,8 @@ fun PlaceCard(
             modifier = Modifier.fillMaxSize()
         )
 
-        // Gradient Overlay
-        Box (
+        /* ---------- GRADIENT ---------- */
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
@@ -67,7 +60,7 @@ fun PlaceCard(
                 )
         )
 
-        // Heart Icon
+        /* ---------- FAVORITE ---------- */
         Box(
             modifier = Modifier
                 .padding(12.dp)
@@ -79,8 +72,7 @@ fun PlaceCard(
             )
         }
 
-
-        // Text Content
+        /* ---------- TEXT ---------- */
         Column(
             modifier = Modifier
                 .align(Alignment.BottomStart)
