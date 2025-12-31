@@ -127,18 +127,34 @@ PlaceDetailScreen
 ![](Media/home.jpeg)
 
 ### Travel Screen
+![](Media/travel01.jpeg)
 
 ### Place Details Screen
+![](Media/traveldetail.jpeg)
 
 ### Food Screen
+![](Media/food1.jpeg)
+
+### Food Details Screen
+![](Media/fooddetail.jpeg)
 
 ### Adventure Screen
+![](Media/adventure01.jpeg)
 
 ### Culture Screen
+![](Media/culture01.jpeg)
 
 ### Emergency Screen
+![](Media/emergency.jpeg)
 
 ### Maps Screen
+![](Media/maps.jpeg)
+
+### Scam Alert Screen
+![](Media/scam.jpeg)
+
+### Translate Screen
+![](Media/translate.jpeg)
 
 ## Next Planned Development (Remaining 40-45%)
 - Backend/API integration
@@ -157,6 +173,7 @@ This project demonstrates:
 - Reusable component design
 - Scalable project structure
 - Industry-ready coding practices
+
 
 
 
