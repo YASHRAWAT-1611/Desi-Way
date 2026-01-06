@@ -43,7 +43,7 @@ fun HomeScreen(navController: NavHostController) {
                     item { HomeHeader() }
                     item { SearchBar() }
 
-                    // ✅ UPDATED: pass navController
+                    // UPDATED: pass navController
                     item { TopVisitsSection(navController) }
 
                     item {

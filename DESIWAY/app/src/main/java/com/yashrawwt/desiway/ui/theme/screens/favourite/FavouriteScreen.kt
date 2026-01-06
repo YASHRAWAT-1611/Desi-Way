@@ -1,111 +1,164 @@
 package com.yashrawwt.desiway.ui.theme.screens.favourite
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.yashrawwt.desiway.ui.theme.MustardBottom
 import com.yashrawwt.desiway.ui.theme.MustardTop
-import com.yashrawwt.desiway.ui.theme.components.FavouriteCard
 import com.yashrawwt.desiway.ui.theme.components.AnimatedEnterItem
-
+import com.yashrawwt.desiway.ui.theme.components.FavouriteCard
+import com.yashrawwt.desiway.ui.theme.data.AdventureRepository
+import com.yashrawwt.desiway.ui.theme.data.FavoriteRepository
+import com.yashrawwt.desiway.ui.theme.data.FoodRepository
+import com.yashrawwt.desiway.ui.theme.data.PlaceRepository
+import com.yashrawwt.desiway.ui.theme.models.FavoriteType
+import com.yashrawwt.desiway.ui.theme.navigation.FeatureRoutes
 
 @Composable
 fun FavouriteScreen(navController: NavController) {
 
-    val destinations = listOf(
-        "https://images.unsplash.com/photo-1696761653275-f9815547ef3e?q=80&w=1029&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" to "Pithoragarh",
-        "https://images.unsplash.com/photo-1605649487212-47bdab064df7?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" to "Manali"
-    )
+    val favorites = FavoriteRepository.favorites
 
-    val foods = listOf(
-        "https://images.unsplash.com/photo-1589302168068-964664d93dc0?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" to "Hyderabadi Biryani",
-        "https://images.unsplash.com/photo-1550547660-d9450f859349" to "Burger"
-    )
+    val favoritePlaces = remember(favorites) {
+        favorites.filter { it.type == FavoriteType.PLACE }
+            .mapNotNull { PlaceRepository.places.find { p -> p.id == it.id } }
+    }
 
-    val adventure = listOf(
-        "https://images.unsplash.com/photo-1642933196504-62107dac9258?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" to "Rafting Rishikesh",
-        "https://images.unsplash.com/photo-1719949122509-74d0a1d08b44?q=80&w=736&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" to "Paragliding"
-    )
+    val favoriteFoods = remember(favorites) {
+        favorites.filter { it.type == FavoriteType.FOOD }
+            .mapNotNull { FoodRepository.getFoodById(it.id) }
+    }
 
-    Column(
+    val favoriteAdventures = remember(favorites) {
+        favorites.filter { it.type == FavoriteType.ADVENTURE }
+            .mapNotNull { AdventureRepository.getAdventureById(it.id) }
+    }
+
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                Brush.verticalGradient(listOf(MustardTop, MustardBottom))
-            )
+            .background(Brush.verticalGradient(listOf(MustardTop, MustardBottom))),
+        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
 
-        // Header
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text("Favourite", style = MaterialTheme.typography.headlineMedium)
-
-            Surface(
-                shape = CircleShape,
-                shadowElevation = 8.dp,
-                modifier = Modifier.size(48.dp)
+        /* ---------- HEADER ---------- */
+        item {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                AsyncImage(
-                    model = "https://i.pravatar.cc/150?img=12",
-                    contentDescription = "Profile",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.clip(CircleShape)
+                Text(
+                    text = "Favourites",
+                    style = MaterialTheme.typography.headlineMedium
+                )
+
+                Surface(
+                    shape = CircleShape,
+                    shadowElevation = 8.dp,
+                    modifier = Modifier.size(48.dp)
+                ) {
+                    AsyncImage(
+                        model = "https://i.pravatar.cc/150?img=12",
+                        contentDescription = "Profile",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.clip(CircleShape)
+                    )
+                }
+            }
+        }
+
+        item {
+            FavouriteRowSection(
+                title = "Destinations",
+                items = favoritePlaces
+            ) { index ->
+                navController.navigate(
+                    "${FeatureRoutes.PLACE_DETAIL}/${favoritePlaces[index].id}"
                 )
             }
         }
 
-        Section("Destination", destinations)
-        Section("Foods", foods)
-        Section("Adventure", adventure)
+        item {
+            FavouriteRowSection(
+                title = "Food",
+                items = favoriteFoods
+            ) { }
+        }
+
+        item {
+            FavouriteRowSection(
+                title = "Adventure",
+                items = favoriteAdventures
+            ) { index ->
+                navController.navigate(
+                    "${FeatureRoutes.ADVENTURE}/${favoriteAdventures[index].id}"
+                )
+            }
+        }
+
+        item { Spacer(modifier = Modifier.height(40.dp)) }
     }
 }
+
+/* ---------- ROW SECTION ---------- */
 
 @Composable
-private fun Section(
+private fun <T> FavouriteRowSection(
     title: String,
-    items: List<Pair<String, String>>
+    items: List<T>,
+    onClick: (Int) -> Unit
 ) {
-    Text(
-        text = title,
-        modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
-        style = MaterialTheme.typography.titleMedium
-    )
+    if (items.isEmpty()) return
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        items(items.size) { index ->
-            AnimatedEnterItem(index = index) {
-                FavouriteCard(
-                    imageUrl = items[index].first,
-                    title = items[index].second
-                )
+    Column {
+
+        Text(
+            text = title,
+            modifier = Modifier.padding(horizontal = 20.dp),
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 20.dp),
+            horizontalArrangement = Arrangement.spacedBy(14.dp)
+        ) {
+            items(items.size) { index ->
+                AnimatedEnterItem(index) {
+                    Box(modifier = Modifier.clickable { onClick(index) }) {
+                        when (val item = items[index]) {
+                            is com.yashrawwt.desiway.ui.theme.models.Place ->
+                                FavouriteCard(item.image, item.name)
+
+                            is com.yashrawwt.desiway.ui.theme.models.Food ->
+                                FavouriteCard(item.image, item.name)
+
+                            is com.yashrawwt.desiway.ui.theme.models.Adventure ->
+                                FavouriteCard(item.image, item.name)
+                        }
+                    }
+                }
             }
         }
     }
-
 }
-

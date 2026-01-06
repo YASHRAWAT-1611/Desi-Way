@@ -9,7 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,7 +22,10 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.yashrawwt.desiway.ui.theme.MustardBottom
 import com.yashrawwt.desiway.ui.theme.MustardTop
+import com.yashrawwt.desiway.ui.theme.components.AnimatedHeart
+import com.yashrawwt.desiway.ui.theme.data.FavoriteRepository
 import com.yashrawwt.desiway.ui.theme.data.PlaceRepository
+import com.yashrawwt.desiway.ui.theme.models.FavoriteType
 import com.yashrawwt.desiway.ui.theme.navigation.FeatureRoutes
 
 @Composable
@@ -31,9 +34,7 @@ fun TravelScreen(navController: NavHostController) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                Brush.verticalGradient(listOf(MustardTop, MustardBottom))
-            ),
+            .background(Brush.verticalGradient(listOf(MustardTop, MustardBottom))),
         verticalArrangement = Arrangement.spacedBy(26.dp)
     ) {
 
@@ -75,6 +76,8 @@ fun TravelScreen(navController: NavHostController) {
     }
 }
 
+/* ---------------- HEADER ---------------- */
+
 @Composable
 private fun TravelHeader() {
     Row(
@@ -85,18 +88,26 @@ private fun TravelHeader() {
     ) {
 
         Column {
-            Text("Travel", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+            Text(
+                text = "Travel",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold
+            )
             Text("DESI WAY", style = MaterialTheme.typography.labelMedium)
         }
 
         AsyncImage(
             model = "https://i.pravatar.cc/150?img=12",
             contentDescription = null,
-            modifier = Modifier.size(46.dp).clip(CircleShape),
+            modifier = Modifier
+                .size(46.dp)
+                .clip(CircleShape),
             contentScale = ContentScale.Crop
         )
     }
 }
+
+/* ---------------- SECTION ---------------- */
 
 @Composable
 private fun TravelSection(
@@ -108,7 +119,12 @@ private fun TravelSection(
     val places = PlaceRepository.places.filter { it.id in placeIds }
 
     Column {
-        Text(title, fontWeight = FontWeight.Bold, modifier = Modifier.padding(start = 20.dp))
+
+        Text(
+            text = title,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(start = 20.dp, bottom = 10.dp)
+        )
 
         LazyRow(
             contentPadding = PaddingValues(horizontal = 20.dp),
@@ -116,23 +132,36 @@ private fun TravelSection(
         ) {
             items(places.size) { index ->
                 val place = places[index]
+
                 TravelCard(
-                    place.name,
-                    place.image
+                    placeId = place.id,
+                    name = place.name,
+                    image = place.image
                 ) {
-                    navController.navigate("${FeatureRoutes.PLACE_DETAIL}/${place.id}")
+                    navController.navigate(
+                        "${FeatureRoutes.PLACE_DETAIL}/${place.id}"
+                    )
                 }
             }
         }
     }
 }
 
+/* ---------------- CARD (FIXED FAVORITES) ---------------- */
+
 @Composable
 private fun TravelCard(
+    placeId: String,
     name: String,
     image: String,
     onClick: () -> Unit
 ) {
+
+    val isFavorite = FavoriteRepository.isFavorite(
+        id = placeId,
+        type = FavoriteType.PLACE
+    )
+
     Box(
         modifier = Modifier
             .width(180.dp)
@@ -148,15 +177,36 @@ private fun TravelCard(
             contentScale = ContentScale.Crop
         )
 
+        //  Animated Favorite (SYNCED)
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(10.dp)
+        ) {
+            AnimatedHeart(
+                isFavorite = isFavorite,
+                onToggle = {
+                    FavoriteRepository.toggleFavorite(
+                        id = placeId,
+                        type = FavoriteType.PLACE
+                    )
+                }
+            )
+        }
+
         Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .background(Color.Black.copy(0.55f))
+                .background(Color.Black.copy(alpha = 0.55f))
                 .padding(10.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text(name, color = Color.White, fontWeight = FontWeight.Medium)
+            Text(
+                text = name,
+                color = Color.White,
+                fontWeight = FontWeight.Medium
+            )
         }
     }
 }

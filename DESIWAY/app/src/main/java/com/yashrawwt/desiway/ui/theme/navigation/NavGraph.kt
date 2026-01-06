@@ -1,9 +1,12 @@
 package com.yashrawwt.desiway.ui.theme.navigation
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.yashrawwt.desiway.ui.theme.screens.adventure.AdventureDetailScreen
 import com.yashrawwt.desiway.ui.theme.screens.adventure.AdventureScreen
 import com.yashrawwt.desiway.ui.theme.screens.culture.CultureScreen
 import com.yashrawwt.desiway.ui.theme.screens.culture.StateDetailScreen
@@ -20,6 +23,7 @@ import com.yashrawwt.desiway.ui.theme.screens.settings.SettingsScreen
 import com.yashrawwt.desiway.ui.theme.screens.translate.TranslateScreen
 import com.yashrawwt.desiway.ui.theme.screens.travel.TravelScreen
 
+
 /* ---------------- FEATURE ROUTES ---------------- */
 
 object FeatureRoutes {
@@ -32,27 +36,49 @@ object FeatureRoutes {
     const val CULTURE = "feature_culture"
     const val MAPS = "feature_maps"
 
-    // Culture → State Detail
-    const val STATE_DETAIL = "state_detail"
-
-    // Food → Food Detail
     const val FOOD_DETAIL = "food_detail"
-
-    // Place → Place Detail
     const val PLACE_DETAIL = "place_detail"
+    const val ADVENTURE_DETAIL = "adventure_detail"
+    const val STATE_DETAIL = "state_detail"
 }
+
 
 /* ---------------- NAV GRAPH ---------------- */
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun AppNavGraph(navController: NavHostController) {
 
     NavHost(
         navController = navController,
-        startDestination = BottomNavItem.Home.route
+        startDestination = BottomNavItem.Home.route,
+        enterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { it },
+                animationSpec = tween(300)
+            ) + fadeIn()
+        },
+        exitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { -it },
+                animationSpec = tween(300)
+            ) + fadeOut()
+        },
+        popEnterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { -it },
+                animationSpec = tween(300)
+            ) + fadeIn()
+        },
+        popExitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { it },
+                animationSpec = tween(300)
+            ) + fadeOut()
+        }
     ) {
 
-        /* ---------- BOTTOM NAV SCREENS ---------- */
+        /* ---------- BOTTOM NAV ---------- */
 
         composable(BottomNavItem.Home.route) {
             HomeScreen(navController)
@@ -70,7 +96,7 @@ fun AppNavGraph(navController: NavHostController) {
             SettingsScreen(navController)
         }
 
-        /* ---------- FEATURE SCREENS ---------- */
+        /* ---------- FEATURES ---------- */
 
         composable(FeatureRoutes.EMERGENCY) {
             EmergencyScreen()
@@ -88,51 +114,40 @@ fun AppNavGraph(navController: NavHostController) {
             FoodScreen(navController)
         }
 
-        /* ---------- FOOD DETAIL (FOOD) ---------- */
-
-        composable(
-            route = "${FeatureRoutes.FOOD_DETAIL}/{foodId}"
-        ) { backStackEntry ->
-            val foodId = backStackEntry.arguments?.getString("foodId") ?: ""
-            FoodDetailsScreen(foodId = foodId)
+        composable("${FeatureRoutes.FOOD_DETAIL}/{foodId}") {
+            val foodId = it.arguments?.getString("foodId") ?: return@composable
+            FoodDetailsScreen(foodId)
         }
-
 
         composable(FeatureRoutes.TRAVEL) {
             TravelScreen(navController)
         }
 
         composable(FeatureRoutes.ADVENTURE) {
-            AdventureScreen()
+            AdventureScreen(navController)
+        }
+
+        composable("${FeatureRoutes.ADVENTURE}/{adventureId}") {
+            val id = it.arguments?.getString("adventureId") ?: return@composable
+            AdventureDetailScreen(id)
         }
 
         composable(FeatureRoutes.CULTURE) {
             CultureScreen(navController)
         }
 
-        /* ---------- STATE DETAIL (CULTURE) ---------- */
+        composable("${FeatureRoutes.STATE_DETAIL}/{stateId}") {
+            val stateId = it.arguments?.getString("stateId") ?: return@composable
+            StateDetailScreen(stateId = stateId)
+        }
 
-        composable(
-            route = "${FeatureRoutes.STATE_DETAIL}/{stateName}"
-        ) { backStackEntry ->
-            val stateName =
-                backStackEntry.arguments?.getString("stateName") ?: ""
-
-            StateDetailScreen(stateName = stateName)
+        composable("${FeatureRoutes.PLACE_DETAIL}/{placeId}") {
+            val placeId = it.arguments?.getString("placeId") ?: return@composable
+            PlaceDetailScreen(placeId)
         }
 
         composable(FeatureRoutes.MAPS) {
             MapsScreen()
         }
-
-        /* ---------- PLACE DETAIL (HOME SCREEN/FAVORITE/DASHBOARD) ---------- */
-
-        composable(
-            route = "${FeatureRoutes.PLACE_DETAIL}/{placeId}"
-        ) { backStackEntry ->
-            val placeId = backStackEntry.arguments?.getString("placeId") ?: ""
-            PlaceDetailScreen(placeId)
-        }
-
     }
 }

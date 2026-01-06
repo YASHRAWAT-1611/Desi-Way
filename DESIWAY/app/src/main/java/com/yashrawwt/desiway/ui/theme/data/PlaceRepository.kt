@@ -81,6 +81,13 @@ object PlaceRepository {
             location = "Karnataka",
             image = "https://images.unsplash.com/photo-1642516863984-68fdeea5ba64?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             description = "Hampi is a city in the Vijayanagara district in the Indian state of Karnataka. Located along the Tungabhadra River in the east and center part of the state, Hampi is near the city of Hospet. It is famous for hosting the Hampi Group of Monuments with the Virupaksha Temple, a UNESCO World Heritage Site."
+        ),
+        Place(
+            id = "pithoragarh",
+            name = "Pithoragarh",
+            location = "Uttarakhand",
+            image = "https://images.unsplash.com/photo-1696761653275-f9815547ef3e?q=80&w=1029&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            description = "Hampi is a city in the Vijayanagara district in the Indian state of Karnataka. Located along the Tungabhadra River in the east and center part of the state, Hampi is near the city of Hospet. It is famous for hosting the Hampi Group of Monuments with the Virupaksha Temple, a UNESCO World Heritage Site."
         )
     )
 

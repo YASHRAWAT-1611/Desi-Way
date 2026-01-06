@@ -27,6 +27,7 @@ fun RecentPlacesSection(navController: NavController) {
     ) {
         item {
             PlaceCard(
+                placeId = "nainital",
                 imageUrl = "https://images.unsplash.com/photo-1706468630738-b0ded0c5fc25?q=80&w=899&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                 placeName = "Nainital",
                 location = "Uttarakhand",
@@ -37,6 +38,7 @@ fun RecentPlacesSection(navController: NavController) {
         }
         item {
             PlaceCard(
+                placeId = "jaipur",
                 imageUrl = "https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                 placeName = "Jaipur",
                 location = "Rajasthan",
@@ -47,6 +49,7 @@ fun RecentPlacesSection(navController: NavController) {
         }
         item {
             PlaceCard(
+                placeId = "ladakh",
                 imageUrl = "https://images.unsplash.com/photo-1617824077360-7a77db40aae1?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                 placeName = "Ladakh",
                 location = "J&K",

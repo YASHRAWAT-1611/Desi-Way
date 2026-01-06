@@ -11,7 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,7 +24,16 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.yashrawwt.desiway.ui.theme.MustardBottom
 import com.yashrawwt.desiway.ui.theme.MustardTop
+import com.yashrawwt.desiway.ui.theme.data.FavoriteRepository
+import com.yashrawwt.desiway.ui.theme.data.FoodRepository
+import com.yashrawwt.desiway.ui.theme.models.FavoriteType
+import com.yashrawwt.desiway.ui.theme.models.Food
+import com.yashrawwt.desiway.ui.theme.models.FoodCategory
 import com.yashrawwt.desiway.ui.theme.navigation.FeatureRoutes
+
+/* ---------------- FILTER ---------------- */
+
+enum class FoodFilter { ALL, VEG, NON_VEG }
 
 /* ---------------- MAIN SCREEN ---------------- */
 
@@ -33,14 +41,18 @@ import com.yashrawwt.desiway.ui.theme.navigation.FeatureRoutes
 fun FoodScreen(navController: NavHostController) {
 
     var selectedFilter by remember { mutableStateOf(FoodFilter.ALL) }
-    val favorites = remember { mutableStateListOf<String>() }
 
-    val filteredItems by remember {
+    // 🔥 Observe favourites (THIS IS IMPORTANT)
+    val favorites = FavoriteRepository.favorites
+
+    val foods = FoodRepository.foods
+
+    val filteredFoods by remember {
         derivedStateOf {
             when (selectedFilter) {
-                FoodFilter.ALL -> allFood
-                FoodFilter.VEG -> allFood.filter { it.isVeg }
-                FoodFilter.NON_VEG -> allFood.filter { !it.isVeg }
+                FoodFilter.ALL -> foods
+                FoodFilter.VEG -> foods.filter { it.isVeg }
+                FoodFilter.NON_VEG -> foods.filter { !it.isVeg }
             }
         }
     }
@@ -54,7 +66,6 @@ fun FoodScreen(navController: NavHostController) {
                 )
                 .padding(padding)
         ) {
-
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(22.dp),
                 modifier = Modifier.fillMaxSize()
@@ -71,7 +82,7 @@ fun FoodScreen(navController: NavHostController) {
 
                 FoodCategory.values().forEach { category ->
                     val categoryItems =
-                        filteredItems.filter { it.category == category }
+                        filteredFoods.filter { it.category == category }
 
                     if (categoryItems.isNotEmpty()) {
                         item {
@@ -135,7 +146,6 @@ private fun FoodHeader() {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Top
     ) {
-
         Column {
             Text(
                 text = "Food",
@@ -166,8 +176,8 @@ private fun FoodHeader() {
 @Composable
 private fun FoodCategorySection(
     title: String,
-    items: List<FoodItemData>,
-    favorites: SnapshotStateList<String>,
+    items: List<Food>,
+    favorites: List<FavoriteRepository.FavoriteItem>,
     navController: NavHostController
 ) {
     Column {
@@ -182,20 +192,24 @@ private fun FoodCategorySection(
             horizontalArrangement = Arrangement.spacedBy(14.dp)
         ) {
             items(items.size) { index ->
-                val item = items[index]
+                val food = items[index]
+
+                val isFavorite = favorites.any {
+                    it.id == food.id && it.type == FavoriteType.FOOD
+                }
 
                 FoodCard(
-                    item = item,
-                    isFavorite = favorites.contains(item.id),
-                    onFavoriteClick = {
-                        if (favorites.contains(item.id))
-                            favorites.remove(item.id)
-                        else
-                            favorites.add(item.id)
+                    food = food,
+                    isFavorite = isFavorite,
+                    onFavoriteToggle = {
+                        FavoriteRepository.toggleFavorite(
+                            id = food.id,
+                            type = FavoriteType.FOOD
+                        )
                     },
                     onClick = {
                         navController.navigate(
-                            "${FeatureRoutes.FOOD_DETAIL}/${item.id}"
+                            "${FeatureRoutes.FOOD_DETAIL}/${food.id}"
                         )
                     }
                 )
@@ -208,9 +222,9 @@ private fun FoodCategorySection(
 
 @Composable
 private fun FoodCard(
-    item: FoodItemData,
+    food: Food,
     isFavorite: Boolean,
-    onFavoriteClick: () -> Unit,
+    onFavoriteToggle: () -> Unit,
     onClick: () -> Unit
 ) {
     Box(
@@ -222,8 +236,8 @@ private fun FoodCard(
     ) {
 
         AsyncImage(
-            model = item.image,
-            contentDescription = item.name,
+            model = food.image,
+            contentDescription = food.name,
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
@@ -236,7 +250,7 @@ private fun FoodCard(
                 .align(Alignment.TopEnd)
                 .padding(10.dp)
                 .scale(1.2f)
-                .clickable { onFavoriteClick() }
+                .clickable { onFavoriteToggle() }
         )
 
         Box(
@@ -248,76 +262,10 @@ private fun FoodCard(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = item.name,
+                text = food.name,
                 color = Color.White,
                 fontWeight = FontWeight.Medium
             )
         }
     }
 }
-
-/* ---------------- DATA ---------------- */
-
-enum class FoodFilter { ALL, VEG, NON_VEG }
-
-enum class FoodCategory { VEGETARIAN, NON_VEGETARIAN, FAST_FOOD, DRINKS }
-
-data class FoodItemData(
-    val id: String,
-    val name: String,
-    val image: String,
-    val isVeg: Boolean,
-    val category: FoodCategory
-)
-
-/* ---------------- DUMMY FOOD ---------------- */
-
-private val allFood = listOf(
-    FoodItemData("veg1", "Rajma Chawal",
-        "https://images.unsplash.com/photo-1593560704563-f176a2eb61db?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        true, FoodCategory.VEGETARIAN),
-
-    FoodItemData("veg2", "Masala Dosa",
-        "https://images.unsplash.com/photo-1694849789325-914b71ab4075?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        true, FoodCategory.VEGETARIAN),
-
-    FoodItemData("veg2", "Paneer Tikka",
-        "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        true, FoodCategory.VEGETARIAN),
-
-    FoodItemData("non1", "Chicken Curry",
-        "https://images.unsplash.com/photo-1694579740719-0e601c5d2437?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        false, FoodCategory.NON_VEGETARIAN),
-
-    FoodItemData("non1", "Fish Curry",
-        "https://images.unsplash.com/photo-1574484284002-952d92456975?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        false, FoodCategory.NON_VEGETARIAN),
-
-    FoodItemData("non1", "Butter Chicken",
-        "https://images.unsplash.com/photo-1728910107534-e04e261768ae?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        false, FoodCategory.NON_VEGETARIAN),
-
-    FoodItemData("fast1", "Samosa",
-        "https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        true, FoodCategory.FAST_FOOD),
-
-    FoodItemData("fast1", "Pani Puri",
-        "https://plus.unsplash.com/premium_photo-1691030658159-e8e29b2b12b9?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        true, FoodCategory.FAST_FOOD),
-
-    FoodItemData("fast1", "Chowmein",
-        "https://images.unsplash.com/photo-1617622141675-d3005b9067c5?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        true, FoodCategory.FAST_FOOD),
-
-    FoodItemData("drink1", "Masala Chai",
-        "https://images.unsplash.com/photo-1633069683078-b180ba2afd89?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        true, FoodCategory.DRINKS),
-
-    FoodItemData("drink1", "Lassi",
-        "https://images.unsplash.com/photo-1692620609860-be6717812f71?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        true, FoodCategory.DRINKS),
-
-    FoodItemData("drink1", "Sugarcane Juice",
-        "https://images.unsplash.com/photo-1534353473418-4cfa6c56fd38?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        true, FoodCategory.DRINKS)
-)

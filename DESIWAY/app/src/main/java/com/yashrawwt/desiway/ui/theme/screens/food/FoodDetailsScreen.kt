@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.yashrawwt.desiway.ui.theme.MustardBottom
 import com.yashrawwt.desiway.ui.theme.MustardTop
+import com.yashrawwt.desiway.ui.theme.data.FoodRepository
+import com.yashrawwt.desiway.ui.theme.models.Food
 
 @Composable
 fun FoodDetailsScreen(foodId: String) {
@@ -87,7 +89,7 @@ fun FoodDetailsScreen(foodId: String) {
 
 /* ---------------- DESCRIPTION ---------------- */
 
-private fun foodDescription(food: FoodItemData): String {
+private fun foodDescription(food: Food): String {
     return when (food.name) {
         "Rajma Chawal" -> "Rājmā, also known as rajmah, rāzmā, or lal lobia, is a vegetarian dish, originating from the Indian subcontinent, consisting of red kidney beans in a thick gravy with many Indian whole spices, and is usually served with rice. It is a part of the regular diet in Northern India, Nepal and Punjab province of Pakistan."
         "Masala Dosa" -> "Masala dosa is a dish of South India, consisting of a savoury dosa crepe stuffed with potato curry. It is a popular breakfast item in South India, though it can be served at all times of the day and found in many other parts of the country and overseas."
