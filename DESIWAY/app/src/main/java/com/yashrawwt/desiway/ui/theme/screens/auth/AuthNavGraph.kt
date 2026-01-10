@@ -6,30 +6,20 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
 object AuthRoutes {
-    const val LOGIN = "auth_login"
-    const val REGISTER = "auth_register"
+    const val LOGIN = "login"
+    const val REGISTER = "register"
 }
 
 @Composable
-fun AuthNavGraph(
-    navController: NavHostController,
-    onLogin: (String, String) -> Unit,
-    onRegister: (String, String, String) -> Unit,
-    onGoogleLogin: () -> Unit,
-    onAuthSuccess: () -> Unit
-) {
+fun AuthNavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = AuthRoutes.LOGIN
     ) {
-
         composable(AuthRoutes.LOGIN) {
             LoginScreen(
-                onLoginClick = { email, password ->
-                    onLogin(email, password)
-                },
-                onGoogleClick = {
-                    onGoogleLogin()
+                onLoginSuccess = {
+                    navController.popBackStack()
                 },
                 onRegisterClick = {
                     navController.navigate(AuthRoutes.REGISTER)
@@ -39,8 +29,8 @@ fun AuthNavGraph(
 
         composable(AuthRoutes.REGISTER) {
             RegisterScreen(
-                onRegisterClick = { name, email, password ->
-                    onRegister(name, email, password)
+                onRegisterSuccess = {
+                    navController.popBackStack()
                 },
                 onLoginClick = {
                     navController.popBackStack()
