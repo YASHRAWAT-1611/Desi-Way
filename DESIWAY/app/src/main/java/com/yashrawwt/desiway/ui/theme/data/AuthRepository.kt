@@ -1,3 +1,10 @@
+package com.yashrawwt.desiway.ui.theme.data
+
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
+import com.yashrawwt.desiway.ui.theme.models.User
+
 object AuthRepository {
 
     private val auth = FirebaseAuth.getInstance()
@@ -13,7 +20,9 @@ object AuthRepository {
     ) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener { onSuccess() }
-            .addOnFailureListener { onError(it.message ?: "Login failed") }
+            .addOnFailureListener {
+                onError(it.message ?: "Login failed")
+            }
     }
 
     fun register(
@@ -24,20 +33,52 @@ object AuthRepository {
         onError: (String) -> Unit
     ) {
         auth.createUserWithEmailAndPassword(email, password)
-            .addOnSuccessListener {
-                val uid = it.user!!.uid
+            .addOnSuccessListener { result ->
                 val user = User(
-                    id = uid,
+                    id = result.user!!.uid,
                     name = name,
                     email = email
                 )
-                db.collection("users").document(uid).set(user)
-                onSuccess()
+                db.collection("users")
+                    .document(user.id)
+                    .set(user)
+                    .addOnSuccessListener { onSuccess() }
             }
-            .addOnFailureListener { onError(it.message ?: "Signup failed") }
+            .addOnFailureListener {
+                onError(it.message ?: "Signup failed")
+            }
     }
 
     fun logout() {
         auth.signOut()
+    }
+
+    fun googleSignIn(
+        idToken: String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+
+        auth.signInWithCredential(credential)
+            .addOnSuccessListener { result ->
+                val firebaseUser = result.user!!
+
+                val user = User(
+                    id = firebaseUser.uid,
+                    name = firebaseUser.displayName ?: "",
+                    email = firebaseUser.email ?: "",
+                    photoUrl = firebaseUser.photoUrl?.toString() ?: ""
+                )
+
+                db.collection("users")
+                    .document(user.id)
+                    .set(user)
+
+                onSuccess()
+            }
+            .addOnFailureListener {
+                onError(it.message ?: "Google Sign-In failed")
+            }
     }
 }

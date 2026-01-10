@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">DesiWay</string>
+    <string name="web_client_id">
+    418244877192-autnsvua5vfnv9da45nq1epvc34c36d4.apps.googleusercontent.com
+    </string>
 </resources>
+
+
