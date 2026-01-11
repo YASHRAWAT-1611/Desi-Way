@@ -10,28 +10,24 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.yashrawwt.desiway.ui.theme.AppRoot
 import com.yashrawwt.desiway.ui.theme.DesiWayTheme
 import com.yashrawwt.desiway.ui.theme.screens.home.MainScreen
 
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Install splash screen
-        val splashScreen = installSplashScreen()
+        installSplashScreen()
         super.onCreate(savedInstanceState)
-
-        // Remove splash immediately (fast app feel)
-        splashScreen.setKeepOnScreenCondition { false }
 
         setContent {
             DesiWayTheme {
-                AppEntryAnimation {
-                    MainScreen()
-                }
+                AppRoot()
             }
         }
     }
 }
+
 
 @Composable
 private fun AppEntryAnimation(
