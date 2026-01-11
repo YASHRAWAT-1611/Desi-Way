@@ -1,6 +1,5 @@
 package com.yashrawwt.desiway.ui.theme.screens.auth
 
-import android.app.Activity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
@@ -21,18 +20,16 @@ fun LoginScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var error by remember { mutableStateOf<String?>(null) }
-    var loading by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
 
-    /* ---------- GOOGLE SIGN-IN RESULT ---------- */
-    val googleLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        loading = false
-        if (result.resultCode == Activity.RESULT_OK) {
+    // 🔑 Google Sign-In result handler
+    val googleLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             try {
-                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
                 val account = task.result
                 val idToken = account.idToken!!
 
@@ -42,12 +39,10 @@ fun LoginScreen(
                     onError = { error = it }
                 )
             } catch (e: Exception) {
-                error = e.message ?: "Google sign-in failed"
+                error = e.message
             }
         }
-    }
 
-    /* ---------- UI ---------- */
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -55,10 +50,7 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center
     ) {
 
-        Text(
-            text = "Login",
-            style = MaterialTheme.typography.headlineMedium
-        )
+        Text("Login", style = MaterialTheme.typography.headlineMedium)
 
         Spacer(Modifier.height(16.dp))
 
@@ -66,8 +58,7 @@ fun LoginScreen(
             value = email,
             onValueChange = { email = it },
             label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(Modifier.height(8.dp))
@@ -76,65 +67,46 @@ fun LoginScreen(
             value = password,
             onValueChange = { password = it },
             label = { Text("Password") },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(Modifier.height(16.dp))
 
         Button(
             onClick = {
-                loading = true
-                error = null
                 AuthRepository.login(
                     email = email,
                     password = password,
-                    onSuccess = {
-                        loading = false
-                        onLoginSuccess()
-                    },
-                    onError = {
-                        loading = false
-                        error = it
-                    }
+                    onSuccess = onLoginSuccess,
+                    onError = { error = it }
                 )
             },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = !loading
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Text(if (loading) "Please wait..." else "Login")
+            Text("Login")
         }
 
         Spacer(Modifier.height(8.dp))
 
-        TextButton(
-            onClick = onRegisterClick,
-            modifier = Modifier.fillMaxWidth()
-        ) {
+        TextButton(onClick = onRegisterClick) {
             Text("Don’t have an account? Register")
         }
 
         Spacer(Modifier.height(16.dp))
 
-        OutlinedButton(
+        Button(
             onClick = {
-                error = null
-                loading = true
                 val client = GoogleSignInHelper.getClient(context)
                 googleLauncher.launch(client.signInIntent)
             },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = !loading
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text("Continue with Google")
         }
 
         error?.let {
             Spacer(Modifier.height(12.dp))
-            Text(
-                text = it,
-                color = MaterialTheme.colorScheme.error
-            )
+            Text(it, color = MaterialTheme.colorScheme.error)
         }
     }
 }
